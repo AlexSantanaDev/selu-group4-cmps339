@@ -5,9 +5,11 @@ const {
   createOrder,
   updateOrder,
   deleteOrder,
+  getUserOrder,
 } = require("../controllers/orderController");
 
 router.get("/", getOrders);
+router.get("/:id", getUserOrder);
 router.post("/", createOrder);
 
 router.put("/:id", updateOrder);

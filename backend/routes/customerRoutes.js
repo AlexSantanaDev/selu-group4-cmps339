@@ -5,9 +5,12 @@ const {
   createCustomer,
   updateCustomer,
   deleteCustomer,
+  getAccount,
 } = require("../controllers/customerController");
 
 router.get("/", getCustomers);
+
+router.get("/login", getAccount);
 
 router.post("/", createCustomer);
 
