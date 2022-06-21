@@ -38,7 +38,7 @@ const createCustomer = (req, res) => {
     if (error) {
       throw error;
     } else {
-      console.log("success");
+      console.log("Success");
     }
 
     res.status(200).json(results);
