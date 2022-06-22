@@ -21,10 +21,8 @@ const getCustomers = (req, res) => {
   var query = connection.query(
     "SELECT * FROM `customers`",
     function (error, results, fields) {
-      console.log(results[0].id);
-      res.status(200).json({
-        id: results[0].id,
-      });
+      console.log(results);
+      res.status(200).json(results);
     }
   );
 };

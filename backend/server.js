@@ -1,10 +1,15 @@
 var mysql = require("mysql");
 var express = require("express");
+var bodyParser = require("body-parser");
+var cors = require("cors");
 const port = 5000;
 const app = express();
 app.listen(port, () => console.log(`Server started on port ${port}`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
