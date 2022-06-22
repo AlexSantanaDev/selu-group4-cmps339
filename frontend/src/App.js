@@ -1,33 +1,31 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [customers, setCustomers] = useState([]);
+  const test = [];
+  // useEffect(() => {
+  //   const fetchData = async () =>{
+  //     const response = await axios.get("http://localhost:5000/api/customers")
+  //     setCustomers(response.data);
+  //   }
+
+  //   }, []);
+  // }
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/customers").then((res) => {
-      console.log(res.data);
-    });
-  });
-
-  async function makeRequest() {
-    const config = {
-      method: "get",
-      url: "http://localhost:5000/api/customers",
-      headers: { "Access-Control-Allow-Origin": "*" },
+    const fetchData = async () => {
+      const response = await axios.get("http://localhost:5000/api/customers");
+      setCustomers(response.data);
     };
-
-    let res = await axios(config);
-
-    console.log(res.data);
-  }
-
-  // axios.get("http://localhost:5000/api/customers").then((response) => {
-  //   console.log(response);
-  // });
+    fetchData();
+  }, []);
 
   return (
     <div className="App">
       <h1>Hello</h1>
+      <h1>{customers[2].id}</h1>
     </div>
   );
 }

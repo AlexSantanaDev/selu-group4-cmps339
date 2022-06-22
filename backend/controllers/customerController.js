@@ -16,15 +16,16 @@ const getCustomers = (req, res) => {
     port: "3306",
   });
 
-  connection.query("USE `selu_project`", function (error, results, fields) {});
+  var sql = "SELECT * FROM `customers`";
 
-  var query = connection.query(
-    "SELECT * FROM `customers`",
-    function (error, results, fields) {
-      console.log(results);
+  connection.query("USE `selu_project`", function (error, results, fields) {});
+  connection.query(sql, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
       res.status(200).json(results);
     }
-  );
+  });
 };
 
 const createCustomer = (req, res) => {

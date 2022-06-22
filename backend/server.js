@@ -32,10 +32,3 @@ connection.connect(function (err) {
 });
 
 connection.query("USE `selu_project`", function (error, results, fields) {});
-
-var query = connection.query(
-  "SELECT * FROM `products`",
-  function (error, results, fields) {
-    // console.log(results);
-  }
-);
