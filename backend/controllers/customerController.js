@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 var mysql = require("mysql");
 const jwtcode = "selu123";
+var connection = require("../lib/db");
+const express = require("express");
+const router = express.Router();
 
 const createToken = (id) => {
   return jwt.sign({ id }, jwtcode, {
@@ -9,6 +12,8 @@ const createToken = (id) => {
 };
 
 const getCustomers = (req, res) => {
+  const id = req.params.id;
+
   var connection = mysql.createConnection({
     host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
     user: "admin",
@@ -16,9 +21,21 @@ const getCustomers = (req, res) => {
     port: "3306",
   });
 
-  var sql = "SELECT * FROM `customers`";
+  var sql = `SELECT * FROM customers WHERE id=${id}`;
 
   connection.query("USE `selu_project`", function (error, results, fields) {});
+  connection.query(sql, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
+
+const getCustomerId = (req, res) => {
+  var email = req.params.email;
+  var sql = `SELECT id FROM customers WHERE email="${email}"`;
   connection.query(sql, function (error, results, fields) {
     if (error) {
       throw error;
@@ -67,32 +84,63 @@ const createCustomer = (req, res) => {
   }
 };
 
-const getAccount = (req, res) => {
-  const { email, password } = req.body;
-  var connection = mysql.createConnection({
-    host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "12345678",
-    port: "3306",
-  });
+const loginAccount = (req, res) => {
+  // router.post("/api/customers/login", function (req, res, next) {
+  // console.log("hi");
+  var email = req.body.email;
+  var password = req.body.password;
+  connection.query(
+    "SELECT * FROM customers WHERE email = ? AND password = ?",
+    [email, password],
+    function (err, data, fields) {
+      // if user not found
+      if (data.length <= 0) {
+        req.flash("error", "Please correct enter email and Password!");
+        console.log("error");
+      } else {
+        console.log("success");
 
-  connection.query("USE `selu_project`", function (error, results, fields) {});
-  var sql = `SELECT * FROM customers WHERE email="${email}" AND password="${password}"`;
-  connection.query(sql, function (error, data, fields) {
-    if (data.length == 0) {
-      throw new Error("Email or Password is incorrect");
-    } else {
-      res.status(200).json({
-        id: data[0].id,
-        firstName: data[0].first_name,
-        lastName: data[0].last_name,
-        address: data[0].address,
-        email: data[0].email,
-        password: data[0].password,
-        token: createToken(data[0].id),
-      });
+        res.json({
+          id: data[0].id,
+          firstName: data[0].first_name,
+          lastName: data[0].last_name,
+          address: data[0].address,
+          email: data[0].email,
+          password: data[0].password,
+          token: createToken(data[0].id),
+        });
+      }
     }
-  });
+  );
+  // });
+
+  // const { email, password } = req.body;
+  // var connection = mysql.createConnection({
+  //   host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
+  //   user: "admin",
+  //   password: "12345678",
+  //   port: "3306",
+  // });
+
+  // connection.query("USE `selu_project`", function (error, results, fields) {});
+  // var sql = `SELECT * FROM customers WHERE email="${email}" AND password="${password}"`;
+  // connection.query(sql, function (error, data, fields) {
+  //   if (data.length == 0) {
+  //     console.log(data);
+  //     throw new Error("Email or Password is incorrect");
+  //   } else {
+  //     res.json({
+  //       id: data[0].id,
+  //       firstName: data[0].first_name,
+  //       lastName: data[0].last_name,
+  //       address: data[0].address,
+  //       email: data[0].email,
+  //       password: data[0].password,
+  //       token: createToken(data[0].id),
+  //     });
+  //     console.log("success");
+  //   }
+  // });
 };
 
 const updateCustomer = (req, res) => {
@@ -146,10 +194,49 @@ const deleteCustomer = (req, res) => {
   });
 };
 
+const getUserOrder = (req, res) => {
+  const id = req.params.id;
+
+  // var connection = mysql.createConnection({
+  //   host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
+  //   user: "admin",
+  //   password: "12345678",
+  //   port: "3306",
+  //   multipleStatements: true,
+  // });
+
+  var sql = `SELECT * FROM orders WHERE customer_id=${id}`;
+  var test = `SELECT * FROM customers WHERE id=${id}`;
+
+  connection.query("USE `selu_project`", function (error, results, fields) {});
+  connection.query(
+    `SELECT * FROM orders WHERE customer_id=${id};
+    SELECT * FROM customers WHERE id=${id}`,
+    function (error, results, fields) {
+      if (error) {
+        throw error;
+      } else {
+        res.json(results);
+        // res.json(results[1]);
+        // res.status(200).json({
+        //   id: results[0].id,
+        //   customerid: results[0].customer_id,
+        //   productid: results[0].product_id,
+        //   amount: results[0].amount,
+        //   address: results[0].shipping_address,
+        //   firstName: results[0].first_name,
+        // });
+      }
+    }
+  );
+};
+
 module.exports = {
   getCustomers,
   createCustomer,
   updateCustomer,
   deleteCustomer,
-  getAccount,
+  loginAccount,
+  getCustomerId,
+  getUserOrder,
 };

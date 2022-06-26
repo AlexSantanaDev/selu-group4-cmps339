@@ -1,18 +1,14 @@
 import "./App.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Home from "./components/Home";
+import Register from "./components/Register";
+import Orders from "./components/Orders";
+import Login from "./components/Login";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   const [customers, setCustomers] = useState([]);
-  const test = [];
-  // useEffect(() => {
-  //   const fetchData = async () =>{
-  //     const response = await axios.get("http://localhost:5000/api/customers")
-  //     setCustomers(response.data);
-  //   }
-
-  //   }, []);
-  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,10 +19,26 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Hello</h1>
-      <h1>{customers[2].id}</h1>
-    </div>
+    <Router>
+      <div className="App">
+        <div className="content">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/me/:postId">
+              <Orders />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
   );
 }
 

@@ -1,16 +1,22 @@
 const express = require("express");
+const { protect } = require("../middleware/authMiddleware");
+
 const router = express.Router();
 const {
   getCustomers,
   createCustomer,
   updateCustomer,
   deleteCustomer,
-  getAccount,
+  loginAccount,
+  getCustomerId,
+  getUserOrder,
 } = require("../controllers/customerController");
 
-router.get("/", getCustomers);
+router.get("/me/:id", getCustomers);
+router.get("/auth/:email", getCustomerId);
+router.get("/me/orders/:id", getUserOrder);
 
-router.get("/login", getAccount);
+router.post("/login", loginAccount);
 
 router.post("/", createCustomer);
 

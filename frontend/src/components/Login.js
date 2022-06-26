@@ -1,12 +1,8 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import React, { Component, useState } from "react";
 import { Typography, Grid, Paper, Button } from "@mui/material";
+import axios from "axios";
 
 const Login = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -14,46 +10,54 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsPending(true);
-    const info = { firstName, lastName, address, email, password };
-    fetch("http://localhost:5000/api/customers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(info),
-    }).then(() => {
-      console.log("new user added");
-      setIsPending(false);
-    });
-  };
+    const info = { email, password };
 
+    // fetch("http://localhost:5000/api/customers/login", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(info),
+    // }).then(() => {
+    //   setIsPending(false);
+    // });
+    fetch("http://localhost:5000/api/customers/login", {
+      method: "POST",
+      body: JSON.stringify(info),
+      headers: { "Content-type": "application/json" },
+    })
+      .then((response) => {
+        // console.log(response);
+        return response.text();
+      })
+      .then((info) => {
+        const json = JSON.parse(info);
+        // window.location.replace(`/`);
+        // console.log(json);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    const fetchData = async () => {
+      const response = await axios.get(
+        `http://localhost:5000/api/customers/auth/${email}`
+      );
+      window.location.replace(`/me/${response.data[0].id}`);
+
+      console.log(response.data[0].id);
+    };
+    fetchData();
+  };
   return (
     <div>
       <Paper>
         <Typography variant="h1" component="div" gutterBottom>
-          Register
+          Login
         </Typography>
       </Paper>
-      <form onSubmit={handleSubmit}>
-        <label>First Name</label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-        <label>Last Name</label>
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-        <label>Address</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-        />
+      <form
+        action="http://someotherserver.com"
+        method="post"
+        onSubmit={handleSubmit}
+      >
         <label>Email</label>
         <input
           type="text"
@@ -71,10 +75,6 @@ const Login = () => {
         {!isPending && <button>Submit</button>}
         {isPending && <button disabled>Registering user</button>}
       </form>
-      {/* <h1>{firstName}</h1>
-      <h1>{lastName}</h1>
-      <h1>{email}</h1>
-      <h1>{password}</h1> */}
     </div>
   );
 };

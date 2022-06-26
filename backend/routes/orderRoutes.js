@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
+
 const {
   getOrders,
   createOrder,
   updateOrder,
   deleteOrder,
-  getUserOrder,
+  // getUserOrder,
 } = require("../controllers/orderController");
 
 router.get("/", getOrders);
-router.get("/:id", getUserOrder);
 router.post("/", createOrder);
 
 router.put("/:id", updateOrder);

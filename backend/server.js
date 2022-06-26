@@ -2,6 +2,15 @@ var mysql = require("mysql");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
+var createError = require("http-errors");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+var expressValidator = require("express-validator");
+var flash = require("express-flash");
+var session = require("express-session");
+var authRouter = require("../backend/routes/auth");
+
 const port = 5000;
 const app = express();
 app.listen(port, () => console.log(`Server started on port ${port}`));
@@ -11,9 +20,27 @@ app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(cookieParser());
+app.use(logger("dev"));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+  session({
+    secret: "123456cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 },
+  })
+);
+
+app.use(flash());
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/auth", authRouter);
 
 var connection = mysql.createConnection({
   host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
