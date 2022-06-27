@@ -24,6 +24,7 @@ const Register = () => {
     }).then(() => {
       console.log("new user added");
       setIsPending(false);
+      window.location.replace(`/`);
     });
   };
 

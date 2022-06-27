@@ -104,21 +104,28 @@ const Orders = () => {
 
   return (
     <div>
-      <div>
-        <h1>User info</h1>
-        <h1>
-          {firstName} {lastName}
-        </h1>
-        <h1>{address}</h1>
-        <h1>{email}</h1>
-        <h4>Customer ID - {idNumber}</h4>
+      <div className="contain">
+        <div className="user">
+          <h1>User info</h1>
+          <h1>
+            {firstName} {lastName}
+          </h1>
+          <h1>{address}</h1>
+          <h1>{email}</h1>
+          <h4>Customer ID - {idNumber}</h4>
+        </div>
       </div>
-      <button onClick={handleClick}>Fetch Orders</button>
-      <button onClick={showForm}>Make an Order</button>
+      <button className="orderbutton" onClick={handleClick}>
+        Fetch Orders
+      </button>
+      <button className="orderbutton" onClick={showForm}>
+        Make an Order
+      </button>
       {form && (
-        <form onSubmit={handleSubmit}>
-          <label>Product</label>
+        <form className="orderform" onSubmit={handleSubmit}>
+          <label className="orderlabel">I would like a </label>
           <select
+            className="orderselect"
             value={makeOrder}
             onChange={(e) => setMakeOrder(e.target.value)}
           >
@@ -127,16 +134,9 @@ const Orders = () => {
             <option value="3">Lg Coffee</option>
           </select>
           <button>Done!</button>
-          <h1>{makeOrder}</h1>
-          <h1>{testMoney}</h1>
         </form>
       )}
       {test && <h4>No active Orders</h4>}
-      {/* {product && <h4>{product}</h4>}
-      {product && <h2>{size}</h2>}
-      {product && <h4>Order ID - {orderId}</h4>}
-      {product && <h4>Shipping Address - {shippingAddress}</h4>}
-      {product && <h4>${money}</h4>} */}
       {product && (
         <table className="styled-table">
           <thead>
@@ -160,7 +160,11 @@ const Orders = () => {
         </table>
       )}
 
-      {product && <button onClick={deleteOrder}>delete</button>}
+      {product && (
+        <button className="orderbutton" onClick={deleteOrder}>
+          delete
+        </button>
+      )}
     </div>
   );
 };
