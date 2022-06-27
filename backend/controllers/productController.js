@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var connection = require("../lib/db");
 
 const getProducts = (req, res) => {
   var connection = mysql.createConnection({
@@ -83,18 +84,27 @@ const deleteProduct = (req, res) => {
   });
 
   connection.query("USE `selu_project`", function (error, results, fields) {});
-  var sql = `DELETE FROM products
-            WHERE id=${id}`;
+  var sql = `DELETE FROM products WHERE id=${id}`;
 
   connection.query(sql, function (error, results, fields) {
     if (error) {
       throw error;
     } else {
-      console.log("Successs");
+      res.json(results);
     }
 
     res.status(200).json(results);
   });
+};
+
+const getUserProducts = (req, res) => {
+  const id = req.params.id;
+  connection.query(
+    `SELECT * FROM products WHERE id=${id}`,
+    function (error, results) {
+      res.json(results);
+    }
+  );
 };
 
 module.exports = {
@@ -102,4 +112,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getUserProducts,
 };

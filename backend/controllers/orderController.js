@@ -51,10 +51,11 @@ const getOrders = (req, res) => {
 // };
 
 const createOrder = (req, res) => {
-  const id = req.body.id;
-  const customerId = req.body.customerId;
-  const productId = req.body.productId;
-  const amount = req.body.amount;
+  // const id = req.body.id;
+  const idNumber = req.body.idNumber;
+  const makeOrder = req.body.makeOrder;
+  const testMoney = req.body.testMoney;
+  const address = req.body.address;
   var connection = mysql.createConnection({
     host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
     user: "admin",
@@ -63,7 +64,7 @@ const createOrder = (req, res) => {
   });
 
   connection.query("USE `selu_project`", function (error, results, fields) {});
-  var sql = `INSERT INTO orders VALUES (${id},"${customerId}","${productId}","${amount}")`;
+  var sql = `INSERT INTO orders VALUES (id,${idNumber},${makeOrder},${testMoney},"${address}")`;
 
   connection.query(sql, function (error, results, fields) {
     if (error) {
@@ -120,7 +121,7 @@ const deleteOrder = (req, res) => {
     if (error) {
       throw error;
     } else {
-      console.log("Successs");
+      console.log(results);
     }
 
     res.status(200).json(results);

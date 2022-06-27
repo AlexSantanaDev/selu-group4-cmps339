@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Orders from "./components/Orders";
 import Login from "./components/Login";
+import Nav from "./components/Nav";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -21,18 +22,19 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Nav />
         <div className="content">
           <Switch>
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/register">
+            <Route exact path="/register">
               <Register />
             </Route>
-            <Route path="/login">
+            <Route exact path="/login">
               <Login />
             </Route>
-            <Route path="/me/:postId">
+            <Route exact path="/me/:postId">
               <Orders />
             </Route>
           </Switch>

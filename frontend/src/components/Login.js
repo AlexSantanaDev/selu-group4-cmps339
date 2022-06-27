@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 import { Typography, Grid, Paper, Button } from "@mui/material";
 import axios from "axios";
+import "./Login.css";
+import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,33 +50,55 @@ const Login = () => {
   };
   return (
     <div>
-      <Paper>
-        <Typography variant="h1" component="div" gutterBottom>
-          Login
-        </Typography>
-      </Paper>
-      <form
-        action="http://someotherserver.com"
-        method="post"
-        onSubmit={handleSubmit}
-      >
-        <label>Email</label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {!isPending && <button>Submit</button>}
-        {isPending && <button disabled>Registering user</button>}
-      </form>
+      <div className="container">
+        <div className="window">
+          <div className="overlay"></div>
+          <div className="content">
+            <div className="welcome">
+              <LocalCafeIcon />
+              Login
+            </div>
+            <div class="subtitle">
+              Please login to place and view your orders!
+            </div>
+            <form
+              action="http://someotherserver.com"
+              method="post"
+              onSubmit={handleSubmit}
+              className="login"
+            >
+              <div className="input-fields">
+                <input
+                  className="input-line full-width"
+                  type="text"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <input
+                  className="input-line full-width"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                {!isPending && (
+                  <button className="ghost-round full-width">Submit</button>
+                )}
+                {isPending && (
+                  <button className="ghost-round full-width" disabled>
+                    Registering user
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
