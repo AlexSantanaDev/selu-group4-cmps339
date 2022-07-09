@@ -42,20 +42,20 @@ app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/auth", authRouter);
 
-var connection = mysql.createConnection({
-  host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-  user: "admin",
-  password: "12345678",
-  port: "3306",
-});
+// var connection = mysql.createConnection({
+//   host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
+//   user: "admin",
+//   password: "12345678",
+//   port: "3306",
+// });
 
-connection.connect(function (err) {
-  if (err) {
-    console.error("Database connection failed: " + err.stack);
-    return;
-  }
+// connection.connect(function (err) {
+//   if (err) {
+//     console.error("Database connection failed: " + err.stack);
+//     return;
+//   }
 
-  console.log("Connected to database.");
-});
+//   console.log("Connected to database.");
+// });
 
-connection.query("USE `selu_project`", function (error, results, fields) {});
+// connection.query("USE `selu_project`", function (error, results, fields) {});

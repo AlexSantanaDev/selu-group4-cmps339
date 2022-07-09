@@ -93,7 +93,11 @@ const Orders = () => {
   };
 
   const showForm = async () => {
-    setForm(true);
+    if (form) {
+      setForm(false);
+    } else {
+      setForm(true);
+    }
   };
 
   // setOrderId(response.data.id);
@@ -106,13 +110,11 @@ const Orders = () => {
     <div>
       <div className="contain">
         <div className="user">
-          <h1>User info</h1>
           <h1>
-            {firstName} {lastName}
+            Welcome, {firstName} {lastName}
           </h1>
-          <h1>{address}</h1>
-          <h1>{email}</h1>
-          <h4>Customer ID - {idNumber}</h4>
+
+          <h4>{email}</h4>
         </div>
       </div>
       <button className="orderbutton" onClick={handleClick}>

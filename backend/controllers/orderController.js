@@ -1,17 +1,9 @@
 var mysql = require("mysql");
 var JWT = require("jsonwebtoken");
 const jwtcode = "selu123";
+var connection = require("../lib/db");
 
 const getOrders = (req, res) => {
-  var connection = mysql.createConnection({
-    host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "12345678",
-    port: "3306",
-  });
-
-  connection.query("USE `selu_project`", function (error, results, fields) {});
-
   var query = connection.query(
     "SELECT * FROM `orders`",
     function (error, results, fields) {
@@ -21,49 +13,13 @@ const getOrders = (req, res) => {
   );
 };
 
-// const getUserOrder = (req, res) => {
-//   var id = req.params.id;
-//   var connection = mysql.createConnection({
-//     host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-//     user: "admin",
-//     password: "12345678",
-//     port: "3306",
-//   });
-
-//   connection.query("USE `selu_project`", function (error, results, fields) {});
-//   res.json(req.user);
-
-// var sql = `SELECT * FROM orders WHERE customer_id = ${id}`;
-
-// var query = connection.query(sql, function (error, results, fields) {
-//   if (!results) {
-//     console.log("No active orders for this customer");
-//   } else {
-//     console.log(results);
-//     res.status(200).json({
-//       id: results[0].id,
-//       customerId: results[0].customer_id,
-//       productId: results[0].product_id,
-//       amount: results[0].amount,
-//     });
-//   }
-// });
-// };
-
 const createOrder = (req, res) => {
   // const id = req.body.id;
   const idNumber = req.body.idNumber;
   const makeOrder = req.body.makeOrder;
   const testMoney = req.body.testMoney;
   const address = req.body.address;
-  var connection = mysql.createConnection({
-    host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "12345678",
-    port: "3306",
-  });
 
-  connection.query("USE `selu_project`", function (error, results, fields) {});
   var sql = `INSERT INTO orders VALUES (id,${idNumber},${makeOrder},${testMoney},"${address}")`;
 
   connection.query(sql, function (error, results, fields) {
@@ -79,16 +35,9 @@ const createOrder = (req, res) => {
 
 const updateOrder = (req, res) => {
   const id = req.params.id;
-  var connection = mysql.createConnection({
-    host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "12345678",
-    port: "3306",
-  });
 
   const updatedInfo = req.body.amount;
 
-  connection.query("USE `selu_project`", function (error, results, fields) {});
   var sql = `UPDATE orders
             SET amount = "${updatedInfo}"
             WHERE id = ${id}`;
@@ -106,14 +55,7 @@ const updateOrder = (req, res) => {
 
 const deleteOrder = (req, res) => {
   const id = req.params.id;
-  var connection = mysql.createConnection({
-    host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",
-    user: "admin",
-    password: "12345678",
-    port: "3306",
-  });
 
-  connection.query("USE `selu_project`", function (error, results, fields) {});
   var sql = `DELETE FROM orders
             WHERE id=${id}`;
 

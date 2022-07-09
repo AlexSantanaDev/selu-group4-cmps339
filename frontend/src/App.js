@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Orders from "./components/Orders";
 import Login from "./components/Login";
 import Nav from "./components/Nav";
+import Admin from "./components/Admin";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
     <Router>
       <div className="App">
         <Nav />
-        <div className="content">
+        <div className="c">
           <Switch>
             <Route exact path="/">
               <Home />
@@ -36,6 +37,9 @@ function App() {
             </Route>
             <Route exact path="/me/:postId">
               <Orders />
+            </Route>
+            <Route path="/admin">
+              <Admin />
             </Route>
           </Switch>
         </div>
