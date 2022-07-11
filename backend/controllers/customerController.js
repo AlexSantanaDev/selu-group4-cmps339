@@ -171,6 +171,24 @@ const getUserOrder = (req, res) => {
   );
 };
 
+const getCartOrder = (req, res) => {
+  const id = req.params.id;
+
+  var sql = `SELECT * FROM orders WHERE customer_id=${id}`;
+
+  connection.query("USE `selu_project`", function (error, results, fields) {});
+  connection.query(
+    `SELECT * FROM orders WHERE customer_id=${id}`,
+    function (error, results, fields) {
+      if (error) {
+        throw error;
+      } else {
+        res.json(results);
+      }
+    }
+  );
+};
+
 module.exports = {
   getCustomers,
   createCustomer,
@@ -180,4 +198,5 @@ module.exports = {
   getCustomerId,
   getUserOrder,
   getAllCustomers,
+  getCartOrder,
 };

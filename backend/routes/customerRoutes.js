@@ -11,6 +11,7 @@ const {
   getCustomerId,
   getUserOrder,
   getAllCustomers,
+  getCartOrder,
 } = require("../controllers/customerController");
 
 //These are our endpoints to get or post information to our server involving CUSTOMERS
@@ -23,6 +24,8 @@ router.get("/auth/:email", getCustomerId);
 
 //this will GET the customers order from his ID and send it to us
 router.get("/me/orders/:id", getUserOrder);
+
+router.get("/me/myOrders/:id", getCartOrder);
 
 //this will GET ALL customers in our DB and send it to us
 router.get("/all", getAllCustomers);

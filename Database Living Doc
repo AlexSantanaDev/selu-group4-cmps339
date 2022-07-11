@@ -1,4 +1,26 @@
-/*
+DROP DATABASE IF EXISTS `selu_project`;
+CREATE DATABASE `selu_project`;
+USE `selu_project`;
+
+CREATE TABLE `products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `size` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+INSERT INTO `products` VALUES (id,'Chocolate milk','Small');
+INSERT INTO `products` VALUES (id,'Chocolate Milk','Medium');
+INSERT INTO `products` VALUES (id,'Chocolate Milk','Large');
+INSERT INTO `products` VALUES (id,'Coffee','Small');
+INSERT INTO `products` VALUES (id,'Coffee','Medium');
+INSERT INTO `products` VALUES (id,'Coffee','Large');
+INSERT INTO `products` VALUES (id,'Frosty','Small');
+INSERT INTO `products` VALUES (id,'Frosty','Medium');
+INSERT INTO `products` VALUES (id,'Frosty','Large');
+INSERT INTO `products` VALUES (id,'Good Stuff','Large',3.99);
+INSERT INTO `products` VALUES (id,'Bad Stuff','Small',123);
+
+
 
 CREATE TABLE `customers` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -7,10 +29,25 @@ CREATE TABLE `customers` (
   `address` varchar(100) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+  PRIMARY KEY (`id`)	
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+INSERT INTO `customers` VALUES (id,'Tom','Brady','50 Cool Terrace Waltham MA','tombrady@gmail.com','Password123');
+INSERT INTO `customers` VALUES (id,'Alex','Santa','120 Redfur Blvd Houston TX','aleSa@yahoo.com','Password123');
+INSERT INTO `customers` VALUES (id,'Williams','Dandy','792 Stone Street Brooklyn NY','Willyboy@hotmail.com','Password123');
+INSERT INTO `customers` VALUES (id,'Stacy','Hanson','52 Yogit Blvd Covington LA','SHand@gmail.com','Password123');
+INSERT INTO `customers` VALUES (id,'John','Smith','4214 Utopia Street Atlanta GA','Smitty@hotmail.com','Password123');
 
 CREATE TABLE `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `amount` int(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_orders_customers_idx` (`customer_id`),
+  KEY `fk_orders_product_idx` (`product_id`),
+  CONSTRAINT `fk_orders_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_orders_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int NOT NULL,
   `product_id` int NOT NULL,
@@ -21,13 +58,31 @@ CREATE TABLE `orders` (
   KEY `fk_orders_product_idx` (`product_id`),
   CONSTRAINT `fk_orders_customers` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_orders_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `products` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `size` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+INSERT INTO `orders` VALUES (id,2,7,6);
+INSERT INTO `orders` VALUES (id,2,7,6);
+INSERT INTO `orders` VALUES (id,1,7,6,"Hall of Fame Lane FL");
+INSERT INTO `orders` VALUES (id,6,3,6,"Westweigo Blvd 231");
+INSERT INTO `orders` VALUES (id,9,1,15,"Todwat Street 4211");
+INSERT INTO `orders` VALUES (id,3,5,6,"Nacy Park Blvd");
+INSERT INTO `orders` VALUES (id,5,7,6,"HFL");
+    
+ALTER TABLE products
+ADD Price DECIMAL(19, 2);
 
-*/
+ALTER TABLE orders
+ADD Price DECIMAL(19, 2);
+
+
+UPDATE `selu_project`.`products` SET `Price` = '2.99' WHERE (`id` = '1');
+UPDATE `selu_project`.`products` SET `Price` = '3.99' WHERE (`id` = '2');
+UPDATE `selu_project`.`products` SET `Price` = '4.99' WHERE (`id` = '3');
+
+UPDATE `selu_project`.`products` SET `Price` = '1.99' WHERE (`id` = '4');
+UPDATE `selu_project`.`products` SET `Price` = '2.99' WHERE (`id` = '5');
+UPDATE `selu_project`.`products` SET `Price` = '4.99' WHERE (`id` = '6');
+
+UPDATE `selu_project`.`products` SET `Price` = '2.99' WHERE (`id` = '7');
+UPDATE `selu_project`.`products` SET `Price` = '4.99' WHERE (`id` = '8');
+UPDATE `selu_project`.`products` SET `Price` = '6.99' WHERE (`id` = '9');

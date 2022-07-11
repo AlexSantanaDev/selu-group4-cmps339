@@ -19,7 +19,24 @@ const Orders = () => {
   const [idNumber, setIdNumber] = useState("");
   const [form, setForm] = useState(false);
   const [makeOrder, setMakeOrder] = useState("1");
-  const [testMoney, setTestMoney] = useState(5);
+  const [testMoney, setTestMoney] = useState(Number);
+
+  //order states
+
+  const [orderPrice, setOrderPrice] = useState("");
+  const [oldOrder, setOldOrder] = useState(Number);
+  const [orderTotal, setOrderTotal] = useState(Number);
+  const [orderData, setOrderData] = useState([]);
+  const [orderCart, setOrderCart] = useState();
+
+  //menu
+  const [menuId, setMenuId] = useState([]);
+  const [menuName, setMenuName] = useState([]);
+  const [menu, setMenu] = useState([]);
+  const [idInCart, setIdInCart] = useState([]);
+  const [tax, setTax] = useState(Number);
+  const [amountBeforeTax, setAmountBeforeTax] = useState(Number);
+  const [checkCart, setCheckCart] = useState(false);
 
   let { postId } = useParams();
 
@@ -61,13 +78,18 @@ const Orders = () => {
     if (!productId) {
       console.log("yes");
     } else {
-      const info = await axios.get(
-        `http://localhost:5000/api/products/me/${productId}`
+      const ordersPlease = await axios.get(
+        `http://localhost:5000/api/customers/me/myOrders/${idNumber}`
       );
-      console.log(info.data[0].name);
-      const { name, size } = info.data[0];
-      setProduct(name);
-      setSize(size);
+      setOrderCart(ordersPlease.data);
+      console.log(orderCart);
+      // const info = await axios.get(
+      //   `http://localhost:5000/api/products/me/${productId}`
+      // );
+      // console.log(info.data);
+      // const { name, size } = info.data[0];
+      // setProduct(name);
+      // setSize(size);
     }
   };
 
@@ -81,6 +103,7 @@ const Orders = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setTestMoney(testMoney + tax);
     const info = { idNumber, makeOrder, testMoney, address };
     fetch("http://localhost:5000/api/orders/", {
       method: "POST",
@@ -92,7 +115,13 @@ const Orders = () => {
     });
   };
 
-  const showForm = async () => {
+  const showForm = () => {
+    const getProduct = async () => {
+      const response = await axios.get(`http://localhost:5000/api/products/`);
+      setOrderData(response.data);
+      console.log(response.data);
+    };
+    getProduct();
     if (form) {
       setForm(false);
     } else {
@@ -100,11 +129,49 @@ const Orders = () => {
     }
   };
 
+  // const showMenu = (e) => {
+  //   e.preventDefault();
+  //   setMenu([e.target.value, ...menu]);
+  //   console.log(menu);
+  // };
+  const addProduct = (e) => {
+    e.preventDefault();
+    setCheckCart(true);
+    setAmountBeforeTax(parseFloat(testMoney) + parseFloat(e.target.value));
+
+    // setPleaseWork(...pleaseWork, {
+    //   id: e.target.id,
+    //   name: document.getElementById(e.target.id).innerHTML,
+    // });
+
+    const newId = [...idInCart];
+    newId.push(e.target.id);
+    setIdInCart(newId);
+    console.log(idInCart);
+
+    const newMenu = [...menu];
+    newMenu.push({
+      id: e.target.id,
+      name: document.getElementById(e.target.id).innerHTML,
+      price: e.target.value,
+    });
+    setMenu(newMenu);
+    setMenuId([...menuId, e.target.id]);
+    setMenuName([...menuName, document.getElementById(e.target.id).innerHTML]);
+    const newTax = e.target.value * 0.1;
+    setTestMoney(parseFloat(testMoney) + parseFloat(e.target.value));
+
+    setTax(parseFloat(tax + newTax));
+    console.log(menu);
+  };
+
   // setOrderId(response.data.id);
   // console.log(orderId);
   // };
 
   // const urlParams = new URLSearchParams(queryString);
+
+  const clearCart = (e) => {};
 
   return (
     <div>
@@ -125,17 +192,47 @@ const Orders = () => {
       </button>
       {form && (
         <form className="orderform" onSubmit={handleSubmit}>
-          <label className="orderlabel">I would like a </label>
+          {/* <label className="orderlabel">I would like a </label>
           <select
             className="orderselect"
             value={makeOrder}
             onChange={(e) => setMakeOrder(e.target.value)}
           >
-            <option value="1">Sm Coffee</option>
-            <option value="2">Md Coffee</option>
-            <option value="3">Lg Coffee</option>
+            <option id="1" value="Small Chocolate Milk">
+              Small Chocolate Milk
+            </option>
+            <option id="2" value="Medium Chocolate Milk">
+              Medium Chocolate Milk
+            </option>
+            <option id="3" value="Large Chocolate Milk">
+              Large Chocolate Milk
+            </option>
           </select>
+          <button onClick={showMenu}>Add another drink?</button> */}
+          {orderData.map((product) => {
+            return (
+              <>
+                <button
+                  className="orderbutton-products"
+                  value={product.Price}
+                  id={product.id}
+                  onClick={addProduct}
+                >
+                  {product.name}
+                </button>
+              </>
+            );
+          })}
+          {menuName.map((name) => {
+            return (
+              <>
+                <h3 className="orderbutton-products-menu"> {name} </h3>;
+              </>
+            );
+          })}
+          <h4>Amount: ${testMoney} </h4>+<h2>Sales Tax: ${tax}</h2>
           <button>Done!</button>
+          {checkCart && <button onClick={clearCart}>Restart?</button>}
         </form>
       )}
       {test && <h4>No active Orders</h4>}
@@ -144,8 +241,6 @@ const Orders = () => {
           <thead>
             <tr>
               <th>OrderId</th>
-              <th>Product</th>
-              <th>Size</th>
               <th>Shipping Address</th>
               <th>Amount</th>
             </tr>
@@ -153,9 +248,7 @@ const Orders = () => {
           <tbody>
             <tr class="active-row">
               <td>{orderId}</td>
-              <td>{product}</td>
-              <td>{size}</td>
-              <td>{shippingAddress}</td>
+              <td>{address}</td>
               <td>{money}</td>
             </tr>
           </tbody>
