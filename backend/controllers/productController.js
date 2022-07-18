@@ -79,10 +79,33 @@ const getUserProducts = (req, res) => {
   );
 };
 
+const getProfit = (req, res) => {
+  const name = req.body.name;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+
+  var sql = `SELECT name,sum(price) AS total FROM history WHERE name='${name}' AND date_ordered between '${startDate}'
+    AND '${endDate}';`;
+
+  // var sql = `SELECT name,sum(price) FROM history WHERE name='Small Coffee' AND date_ordered between '2022-07-10 15:18:54'
+  // AND '2022-07-14 00:03:10';`;
+
+  connection.query(sql, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      console.log(results);
+    }
+    console.log("suscces");
+    res.status(200).json(results);
+  });
+};
+
 module.exports = {
   getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
   getUserProducts,
+  getProfit,
 };

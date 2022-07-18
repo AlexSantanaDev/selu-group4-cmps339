@@ -10,6 +10,7 @@ var expressValidator = require("express-validator");
 var flash = require("express-flash");
 var session = require("express-session");
 var authRouter = require("../backend/routes/auth");
+var moment = require("moment");
 
 const port = 5000;
 const app = express();
@@ -41,6 +42,7 @@ app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/auth", authRouter);
+console.log(moment());
 
 // var connection = mysql.createConnection({
 //   host: "school.ckv8j6gpmc8l.us-east-2.rds.amazonaws.com",

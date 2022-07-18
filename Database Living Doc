@@ -1,4 +1,6 @@
+
 DROP DATABASE IF EXISTS `selu_project`;
+
 CREATE DATABASE `selu_project`;
 USE `selu_project`;
 
@@ -36,7 +38,6 @@ INSERT INTO `customers` VALUES (id,'Alex','Santa','120 Redfur Blvd Houston TX','
 INSERT INTO `customers` VALUES (id,'Williams','Dandy','792 Stone Street Brooklyn NY','Willyboy@hotmail.com','Password123');
 INSERT INTO `customers` VALUES (id,'Stacy','Hanson','52 Yogit Blvd Covington LA','SHand@gmail.com','Password123');
 INSERT INTO `customers` VALUES (id,'John','Smith','4214 Utopia Street Atlanta GA','Smitty@hotmail.com','Password123');
-
 CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
@@ -52,6 +53,8 @@ CREATE TABLE `orders` (
   `customer_id` int NOT NULL,
   `product_id` int NOT NULL,
   `amount` int NOT NULL,
+`price` DECIMAL(19, 2),
+
   `shipping_address` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_orders_customers_idx` (`customer_id`),
@@ -60,19 +63,28 @@ CREATE TABLE `orders` (
   CONSTRAINT `fk_orders_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `orders` VALUES (id,2,7,6);
-INSERT INTO `orders` VALUES (id,2,7,6);
+
 INSERT INTO `orders` VALUES (id,1,7,6,"Hall of Fame Lane FL");
-INSERT INTO `orders` VALUES (id,6,3,6,"Westweigo Blvd 231");
-INSERT INTO `orders` VALUES (id,9,1,15,"Todwat Street 4211");
 INSERT INTO `orders` VALUES (id,3,5,6,"Nacy Park Blvd");
 INSERT INTO `orders` VALUES (id,5,7,6,"HFL");
+
+ALTER TABLE orders
+ADD Shipping varchar(255);
     
 ALTER TABLE products
 ADD Price DECIMAL(19, 2);
 
 ALTER TABLE orders
 ADD Price DECIMAL(19, 2);
+
+
+
+
+
+ALTER TABLE orders
+ADD COLUMN address varchar(255);
+
+
 
 
 UPDATE `selu_project`.`products` SET `Price` = '2.99' WHERE (`id` = '1');
@@ -86,3 +98,51 @@ UPDATE `selu_project`.`products` SET `Price` = '4.99' WHERE (`id` = '6');
 UPDATE `selu_project`.`products` SET `Price` = '2.99' WHERE (`id` = '7');
 UPDATE `selu_project`.`products` SET `Price` = '4.99' WHERE (`id` = '8');
 UPDATE `selu_project`.`products` SET `Price` = '6.99' WHERE (`id` = '9');
+
+
+CREATE TABLE `history` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+ `price` DECIMAL(19, 2),
+  date_ordered TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+INSERT INTO `history`(name,price) VALUES ('SmallCoffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Medium Coffee',2.99);
+INSERT INTO `history`(name,price) VALUES ('Medium Coffee',2.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Large Coffee',3.99);
+INSERT INTO `history`(name,price) VALUES ('Large Coffee',3.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Small Coffee',1.99);
+INSERT INTO `history`(name,price) VALUES ('Small Frosty',2.99);
+INSERT INTO `history`(name,price) VALUES ('Medium Frosty',4.99);
+INSERT INTO `history`(name,price) VALUES ('Small Frosty',2.99);
+INSERT INTO `history`(name,price) VALUES ('Large Frosty',6.99);
+INSERT INTO `history`(name,price) VALUES ('Small Chocolate Milk',2.99);
+INSERT INTO `history`(name,price) VALUES ('Medium Chocolate Milk',3.99);
+INSERT INTO `history`(name,price) VALUES ('Large Chocolate Milk',4.99);
+
+
+SELECT * FROM history WHERE date_ordered
+BETWEEN '2022-07-17 22:53:49' 
+AND '2022-07-17 22:53:50';
+
+SELECT name,sum(price) AS total FROM history WHERE name='Small_Coffee' AND date_ordered between '2022-07-18 00:22:12' 
+AND '2022-07-18 00:23:15';
+
+ SELECT name,sum(price) FROM history WHERE name='Small Coffee' AND date_ordered between '2022-07-17 15:18:54'
+  AND '2022-07-17 22:18:55';
+
+ 
+ALTER TABLE history
+DROP COLUMN price;
+
+ALTER TABLE orders
+ADD data TIMESTAMP;
+
+ALTER TABLE history
+ADD price DECIMAL(19, 2);

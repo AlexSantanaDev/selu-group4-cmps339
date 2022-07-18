@@ -18,6 +18,12 @@ const Nav = () => {
             <Link to="/">Menu</Link>
           </li>
           <li>
+            <Link to="/profit">Profit</Link>
+          </li>
+          <li>
+            <Link to="/admin">Admin</Link>
+          </li>
+          <li>
             <Link to="/register">Register</Link>
           </li>
           <li>

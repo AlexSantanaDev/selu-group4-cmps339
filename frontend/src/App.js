@@ -7,6 +7,7 @@ import Orders from "./components/Orders";
 import Login from "./components/Login";
 import Nav from "./components/Nav";
 import Admin from "./components/Admin";
+import Profit from "./components/Profit";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
@@ -40,6 +41,9 @@ function App() {
             </Route>
             <Route path="/admin">
               <Admin />
+            </Route>
+            <Route exact path="/profit">
+              <Profit />
             </Route>
           </Switch>
         </div>

@@ -6,6 +6,7 @@ const {
   createProduct,
   deleteProduct,
   getUserProducts,
+  getProfit,
 } = require("../controllers/productController");
 
 //These are our endpoints to get or post information to our server involving PRODUCTS
@@ -15,6 +16,8 @@ router.get("/", getProducts);
 
 //this will get all of a customers PRODUCTS dependent on his ID
 router.get("/me/:id", getUserProducts);
+
+router.post("/profit", getProfit);
 
 //this will create a PRODUCT into our DB
 router.post("/", createProduct);

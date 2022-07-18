@@ -21,6 +21,47 @@ const createOrder = (req, res) => {
   const address = req.body.address;
 
   var sql = `INSERT INTO orders VALUES (id,${idNumber},${makeOrder},${testMoney},"${address}")`;
+  var sql2 = `INSERT INTO history(name,price) VALUES ('Large Chocolate Milk',4.99)`;
+  var sql3 = `INSERT INTO history(name,price) VALUES ('Small Coffee',2.99)`;
+
+  connection.query(sql2, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Successs");
+    }
+
+    res.status(200).json(results);
+  });
+
+  connection.query(sql2, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Successs");
+    }
+
+    res.status(200).json(results);
+  });
+  connection.query(sql2, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Successs");
+    }
+
+    res.status(200).json(results);
+  });
+
+  connection.query(sql3, function (error, results, fields) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Successs");
+    }
+
+    res.status(200).json(results);
+  });
 
   connection.query(sql, function (error, results, fields) {
     if (error) {
